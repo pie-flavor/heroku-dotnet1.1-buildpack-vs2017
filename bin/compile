@@ -115,7 +115,7 @@ echo "Building ${PROJECT_FILE}"
 export NUGET_PACKAGES="${CACHE_DIR}/nuget/cache"
 
 echo "dotnet restore ${PROJECT_FILE}"
-dotnet restore --runtime ubuntu.14.04-x64 ${PROJECT_FILE}
+dotnet restore -InstallPrerelease --runtime ubuntu.14.04-x64 ${PROJECT_FILE}
 
 echo "dotnet publish ${PROJECT_FILE} --output ${BUILD_DIR}"
 dotnet publish ${PROJECT_FILE} --output ${BUILD_DIR} --runtime ubuntu.14.04-x64 --configuration Release
