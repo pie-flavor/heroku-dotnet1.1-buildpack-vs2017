@@ -109,6 +109,7 @@ else
 	printf 'Found %s csproj files\n' $(echo "$PROJECT_FILES" | wc -l | tr -d ' ')
 	PROJECT_FILE=$(echo "$PROJECT_FILES" | head -1)
 fi
+echo "$PROJECT_FILES"
 echo "Building ${PROJECT_FILE}"
 
 export NUGET_PACKAGES="${CACHE_DIR}/nuget/cache"
