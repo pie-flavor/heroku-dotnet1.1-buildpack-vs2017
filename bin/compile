@@ -114,7 +114,8 @@ else
 	NUGETCONFIG=$(echo "$NUGETCONFIGS" | head -1)
 fi
 
-echo "Building ${PROJECT_FILE}"
+echo "> Project name: ${PROJECT_NAME}"
+echo "> Building ${PROJECT_FILE}"
 
 export NUGET_PACKAGES="${CACHE_DIR}/nuget/cache"
 
