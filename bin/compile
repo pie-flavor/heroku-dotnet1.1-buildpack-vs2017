@@ -148,6 +148,6 @@ if [ -e ${SRC_DIR}/Procfile ]; then
 else
 	cat << EOT >> ${BUILD_DIR}/Procfile
 echo "dotnet $PORT"
-#web: ASPNETCORE_URLS='http://+:\$PORT' dotnet ./AttorneyJournal.dll --urls http://+:\$PORT
+web: ASPNETCORE_URLS='http://+:\$PORT' dotnet ./${PROJECT_NAME}.dll --urls http://+:\$PORT
 EOT
 fi
