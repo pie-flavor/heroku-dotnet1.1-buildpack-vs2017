@@ -20,7 +20,7 @@ export_env_dir ${ENV_DIR}
 
 : ${LIBUV_VERSION:="1.11.0"}
 : ${NODEJS_VERSION:="6.9.5"}
-: ${DOTNET_SDK_VERSION:="1.0.0-rc4-004771"}
+: ${DOTNET_SDK_VERSION:="1.1.2"}
 : ${DOTNET_RUNTIME_VERSION:="1.1.0"}
 : ${LIBUNWIND_VERSION:="1.1-4.1"}
 
@@ -64,7 +64,7 @@ if [ ! -d ${DOTNET_CACHE_LOCATION} ]; then
 
 	echo "Downloading .NET SDK version ${DOTNET_SDK_VERSION} and runtime version ${DOTNET_RUNTIME_VERSION}"
 
-	DOTNET_SDK_DOWNLOAD_URL=https://dotnetcli.blob.core.windows.net/dotnet/Sdk/$DOTNET_SDK_VERSION/dotnet-dev-ubuntu-x64.$DOTNET_SDK_VERSION.tar.gz
+	DOTNET_SDK_DOWNLOAD_URL=https://download.microsoft.com/download/E/7/8/E782433E-7737-4E6C-BFBF-290A0A81C3D7/dotnet-dev-ubuntu-x64.1.0.4.tar.gz
 	curl -sSL ${DOTNET_SDK_DOWNLOAD_URL} | tar xz -C ${DOTNET_CACHE_LOCATION}/sdk
 	find ${DOTNET_CACHE_LOCATION}/sdk/sdk/${DOTNET_SDK_VERSION}/runtimes/* -maxdepth 0 ! -name unix ! -name any -exec rm -r {} +
 	rm -f ${DOTNET_CACHE_LOCATION}/sdk/sdk/${DOTNET_SDK_VERSION}/nuGetPackagesArchive.lzma
