@@ -147,7 +147,7 @@ if [ -e ${SRC_DIR}/Procfile ]; then
 	cp ${SRC_DIR}/Procfile ${BUILD_DIR}
 else
 	cat << EOT >> ${BUILD_DIR}/Procfile
-echo "dotnet $PORT"
 web: ASPNETCORE_URLS='http://+:\$PORT' dotnet ./${PROJECT_NAME}.dll --urls http://+:\$PORT
+echo "dotnet run"
 EOT
 fi
