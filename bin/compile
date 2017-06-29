@@ -112,6 +112,9 @@ else
 	NUGETCONFIGS=$(find ${SRC_DIR}/. -maxdepth 3 -iname NuGet.Config)
 	printf 'Found %s NuGet config files\n' $(echo "$NUGETCONFIGS" | wc -l | tr -d ' ')
 	NUGETCONFIG=$(echo "$NUGETCONFIGS" | head -1)
+
+	PROJECT_NAME="AttorneyJournal"
+
 fi
 
 echo "> Project name: ${PROJECT_NAME}"
@@ -145,6 +148,6 @@ if [ -e ${SRC_DIR}/Procfile ]; then
 else
 	cat << EOT >> ${BUILD_DIR}/Procfile
 echo "dotnet $PORT"
-web: ASPNETCORE_URLS='http://+:\$PORT' dotnet ./${PROJECT_NAME}.dll --urls http://+:\$PORT
+#web: ASPNETCORE_URLS='http://+:\$PORT' dotnet ./${PROJECT_NAME}.dll --urls http://+:\$PORT
 EOT
 fi
