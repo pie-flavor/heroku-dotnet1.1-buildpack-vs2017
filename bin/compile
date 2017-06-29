@@ -105,7 +105,7 @@ elif [ -e ${DEPLOYMENT_FILE_LOCATION} ]; then
 	echo "Project name configured in .deployment file: ${PROJECT_NAME}"
 else
 	
-	S=$(find ${SRC_DIR}/. -maxdepth 3 -iname *.csproj)
+	PROJECT_FILES=$(find ${SRC_DIR}/. -maxdepth 3 -iname *.csproj)
 	printf 'Found %s csproj files\n' $(echo "$PROJECT_FILES" | wc -l | tr -d ' ')
 	PROJECT_FILE=$(echo "$PROJECT_FILES" | head -1)
 fi
