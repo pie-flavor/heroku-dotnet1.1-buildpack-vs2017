@@ -108,14 +108,18 @@ else
 	PROJECT_FILES=$(find ${SRC_DIR}/. -maxdepth 3 -iname *.csproj)
 	printf 'Found %s csproj files\n' $(echo "$PROJECT_FILES" | wc -l | tr -d ' ')
 	PROJECT_FILE=$(echo "$PROJECT_FILES" | head -1)
+
+	NUGETCONFIGS=$(find ${SRC_DIR}/. -maxdepth 3 -iname NuGet.Config)
+	printf 'Found %s NuGet config files\n' $(echo "$NUGETCONFIGS" | wc -l | tr -d ' ')
+	NUGETCONFIG=$(echo "$NUGETCONFIGS" | head -1)
 fi
-echo "$PROJECT_FILES"
+
 echo "Building ${PROJECT_FILE}"
 
 export NUGET_PACKAGES="${CACHE_DIR}/nuget/cache"
 
 echo "dotnet restore ${PROJECT_FILE}"
-dotnet restore -InstallPrerelease --runtime ubuntu.14.04-x64 ${PROJECT_FILE}
+dotnet restore --configfile ${NUGETCONFIG} --runtime ubuntu.14.04-x64 ${PROJECT_FILE}
 
 echo "dotnet publish ${PROJECT_FILE} --output ${BUILD_DIR}"
 dotnet publish ${PROJECT_FILE} --output ${BUILD_DIR} --runtime ubuntu.14.04-x64 --configuration Release
