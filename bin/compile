@@ -125,7 +125,7 @@ export NUGET_PACKAGES="${CACHE_DIR}/nuget/cache"
 echo "dotnet restore ${PROJECT_FILE}"
 dotnet restore --configfile ${NUGETCONFIG} --runtime ubuntu.14.04-x64 ${PROJECT_FILE}
 
-echo "dotnet publish ${PROJECT_FILE} --output ${BUILD_DIR}"
+echo "dotnet publish ${PROJECT_FILE} -c 'Release' --output ${BUILD_DIR}"
 dotnet publish ${PROJECT_FILE} --output ${BUILD_DIR} --runtime ubuntu.14.04-x64 --configuration Release
 
 # Get libuv
@@ -148,6 +148,5 @@ if [ -e ${SRC_DIR}/Procfile ]; then
 else
 	cat << EOT >> ${BUILD_DIR}/Procfile
 web: ASPNETCORE_URLS='http://+:\$PORT' dotnet ./${PROJECT_NAME}.dll --urls http://+:\$PORT
-echo "dotnet run"
 EOT
 fi
