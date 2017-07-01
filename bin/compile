@@ -94,38 +94,37 @@ fi
 npm config set cache ${NODEJS_CACHE_LOCATION}/npm/cache -g
 
 # Build the project
-DEPLOYMENT_FILE_LOCATION=${SRC_DIR}/.deployment
-if [ -n "$PROJECT" ]; then
-	PROJECT_FILE=${SRC_DIR}/${PROJECT}
-	echo "Project file configured in PROJECT environment variable"
-elif [ -e ${DEPLOYMENT_FILE_LOCATION} ]; then
-	PROJECT_NAME=$(awk -F "=" '/project/ {print $2}' ${DEPLOYMENT_FILE_LOCATION} | tr -d ' ')
-	PROJECT_FILE=${SRC_DIR}/${PROJECT_NAME}
-	echo "Project file configured in .deployment file: ${PROJECT_FILE}"
-	echo "Project name configured in .deployment file: ${PROJECT_NAME}"
-else
+#DEPLOYMENT_FILE_LOCATION=${SRC_DIR}/.deployment
 	
-	PROJECT_FILES=$(find ${SRC_DIR}/. -maxdepth 3 -iname AttorneyJournal.csproj)
-	printf 'Found %s csproj files\n' $(echo "$PROJECT_FILES" | wc -l | tr -d ' ')
-	PROJECT_FILE=$(echo "$PROJECT_FILES" | head -1)
+SOLUTION_FILES=$(find ${SRC_DIR}/. -maxdepth 3 -iname *.sln)
+printf 'Found %s .sln files\n' $(echo "$SOLUTION_FILES" | wc -l | tr -d ' ')
+SOLUTION_FILE_FOUND=$(echo "$SOLUTION_FILES" | head -1)
+PROJECT_FILE="${SOLUTION_FILE_FOUND/.sln/.csproj}"
 
-	NUGETCONFIGS=$(find ${SRC_DIR}/. -maxdepth 3 -iname NuGet.Config)
-	printf 'Found %s NuGet config files\n' $(echo "$NUGETCONFIGS" | wc -l | tr -d ' ')
-	NUGETCONFIG=$(echo "$NUGETCONFIGS" | head -1)
+#PROJECT_FILES=$(find ${SRC_DIR}/. -maxdepth 3 -iname *.csproj)
+#printf 'Found %s .csproj files\n' $(echo "$PROJECT_FILES" | wc -l | tr -d ' ')
+#PROJECT_FILE=$(echo "$PROJECT_FILES" | head -1)
 
-	PROJECT_NAME="AttorneyJournal"
+NUGETCONFIGS=$(find ${SRC_DIR}/. -maxdepth 3 -iname NuGet.Config)
+printf 'Found %s NuGet config files\n' $(echo "$NUGETCONFIGS" | wc -l | tr -d ' ')
+NUGETCONFIG=$(echo "$NUGETCONFIGS" | head -1)
 
-fi
+PROJECT_NAME="${SOLUTION_FILE_FOUND/.sln/}"
 
 echo "> Project name: ${PROJECT_NAME}"
 echo "> Building ${PROJECT_FILE}"
 
 export NUGET_PACKAGES="${CACHE_DIR}/nuget/cache"
 
-echo "dotnet restore ${PROJECT_FILE}"
-dotnet restore --configfile ${NUGETCONFIG} --runtime ubuntu.14.04-x64 ${PROJECT_FILE}
+if [ ! -e ${NUGETCONFIG}]; then
+	echo "dotnet restore ${PROJECT_FILE} using ${NUGETCONFIG}"
+	dotnet restore --configfile ${NUGETCONFIG} --runtime ubuntu.14.04-x64 ${PROJECT_FILE}
+else
+	echo "dotnet restore ${PROJECT_FILE}"
+	dotnet restore --runtime ubuntu.14.04-x64 ${PROJECT_FILE}
+fi
 
-echo "dotnet publish ${PROJECT_FILE} -c 'Release' --output ${BUILD_DIR}"
+echo "dotnet publish ${PROJECT_FILE} --output ${BUILD_DIR} --runtime ubuntu.14.04-x64 --configuration Release"
 dotnet publish ${PROJECT_FILE} --output ${BUILD_DIR} --runtime ubuntu.14.04-x64 --configuration Release
 
 # Get libuv
