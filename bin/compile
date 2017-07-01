@@ -94,27 +94,26 @@ fi
 npm config set cache ${NODEJS_CACHE_LOCATION}/npm/cache -g
 
 # Build the project
-#DEPLOYMENT_FILE_LOCATION=${SRC_DIR}/.deployment
-	
+
 SOLUTION_FILES=$(find ${SRC_DIR}/. -maxdepth 3 -iname *.sln)
 printf 'Found %s .sln files\n' $(echo "$SOLUTION_FILES" | wc -l | tr -d ' ')
 SOLUTION_FILE_FOUND=$(echo "$SOLUTION_FILES" | head -1)
-PROJECT_FILE="${SOLUTION_FILE_FOUND/.sln/.csproj}"
 
-#PROJECT_FILES=$(find ${SRC_DIR}/. -maxdepth 3 -iname *.csproj)
-#printf 'Found %s .csproj files\n' $(echo "$PROJECT_FILES" | wc -l | tr -d ' ')
-#PROJECT_FILE=$(echo "$PROJECT_FILES" | head -1)
+#Get project name
+PROJECT_NAME="${SOLUTION_FILE_FOUND##*/}"
+PROJECT_NAME="${PROJECT_NAME/.sln/}"
+
+echo "Project name: ${PROJECT_NAME}"
+
+PROJECT_FILES=$(find ${SRC_DIR}/. -maxdepth 3 -iname ${PROJECT_NAME}.csproj)
+printf 'Found %s .csproj files\n' $(echo "$PROJECT_FILES" | wc -l | tr -d ' ')
+PROJECT_FILE=$(echo "$PROJECT_FILES" | head -1)
 
 NUGETCONFIGS=$(find ${SRC_DIR}/. -maxdepth 3 -iname NuGet.Config)
 printf 'Found %s NuGet config files\n' $(echo "$NUGETCONFIGS" | wc -l | tr -d ' ')
 NUGETCONFIG=$(echo "$NUGETCONFIGS" | head -1)
 
-#PROJECT_NAME="$SOLUTION_FILE_FOUND" | rev | cut -d"/" -f1 | rev
-PROJECT_NAME="${SOLUTION_FILE_FOUND##*/}"
-PROJECT_NAME="${PROJECT_NAME/.sln/}"
-
-echo "> Project name: ${PROJECT_NAME}"
-echo "> Building ${PROJECT_FILE}"
+echo "Building ${PROJECT_FILE}"
 
 export NUGET_PACKAGES="${CACHE_DIR}/nuget/cache"
 
