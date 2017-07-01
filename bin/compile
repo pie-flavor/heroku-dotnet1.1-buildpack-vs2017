@@ -109,7 +109,8 @@ NUGETCONFIGS=$(find ${SRC_DIR}/. -maxdepth 3 -iname NuGet.Config)
 printf 'Found %s NuGet config files\n' $(echo "$NUGETCONFIGS" | wc -l | tr -d ' ')
 NUGETCONFIG=$(echo "$NUGETCONFIGS" | head -1)
 
-PROJECT_NAME="${SOLUTION_FILE_FOUND/.sln/}"
+PROJECT_NAME="$SOLUTION_FILE_FOUND" | rev | cut -d"/" -f1 | rev
+PROJECT_NAME="${PROJECT_NAME/.sln/}"
 
 echo "> Project name: ${PROJECT_NAME}"
 echo "> Building ${PROJECT_FILE}"
