@@ -19,9 +19,8 @@ source $BUILDPACK_DIR/bin/util
 export_env_dir ${ENV_DIR}
 
 : ${LIBUV_VERSION:="1.11.0"}
-: ${NODEJS_VERSION:="8.1.3"}
-: ${DOTNET_SDK_VERSION:="1.0.4"}
-: ${DOTNET_RUNTIME_VERSION:="1.1.2"}
+: ${DOTNET_SDK_VERSION:="2.1.2"}
+: ${DOTNET_RUNTIME_VERSION:="2.0.3"}
 : ${LIBUNWIND_VERSION:="1.1-4.1"}
 
 export NUGET_XMLDOC_MODE=skip
@@ -78,20 +77,6 @@ cat <<EOF >$BUILD_DIR/.profile.d/000_dotnet.sh
 export PATH="\$HOME/dotnet:\$PATH"
 EOF
 
-# Get Node.js
-NODEJS_CACHE_LOCATION=${CACHE_DIR}/nodejs/${NODEJS_VERSION}
-export PATH="${NODEJS_CACHE_LOCATION}/node-v${NODEJS_VERSION}-linux-x64/bin:$PATH"
-if [ ! -d ${NODEJS_CACHE_LOCATION} ]; then
-	rm -rf ${CACHE_DIR}/nodejs/* || true
-	NODEJS_DOWNLOAD_URL=https://nodejs.org/dist/v${NODEJS_VERSION}/node-v${NODEJS_VERSION}-linux-x64.tar.xz
-
-	mkdir -p ${NODEJS_CACHE_LOCATION}
-
-	echo "Downloading Node.js version ${NODEJS_VERSION}"
-	curl -sSL ${NODEJS_DOWNLOAD_URL} | tar xJ -C ${NODEJS_CACHE_LOCATION}
-	npm install -g grunt-cli bower gulp
-fi
-npm config set cache ${NODEJS_CACHE_LOCATION}/npm/cache -g
 
 # Build the project
 
