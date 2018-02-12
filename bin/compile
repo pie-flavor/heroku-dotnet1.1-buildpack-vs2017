@@ -19,8 +19,8 @@ source $BUILDPACK_DIR/bin/util
 export_env_dir ${ENV_DIR}
 
 : ${LIBUV_VERSION:="1.11.0"}
-: ${DOTNET_SDK_VERSION:="2.1.2"}
-: ${DOTNET_RUNTIME_VERSION:="2.0.3"}
+: ${DOTNET_SDK_VERSION:="2.1.4"}
+: ${DOTNET_RUNTIME_VERSION:="2.0.5"}
 : ${LIBUNWIND_VERSION:="1.1-4.1"}
 
 export NUGET_XMLDOC_MODE=skip
